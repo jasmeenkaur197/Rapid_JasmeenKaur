@@ -73,7 +73,7 @@ def upload_file():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-if _name_ == "_main_":
+if _name_ == "__main__":
     app.run(debug=True)
 
 
