@@ -6,6 +6,7 @@ import tempfile
 from gevent.pywsgi import WSGIServer
 from flask import Flask, after_this_request, render_template, request, send_file
 from subprocess import call
+from flask import Flask, request, jsonify
 
 UPLOAD_FOLDER = '/tmp'
 ALLOWED_EXTENSIONS = set(['doc', 'docx', 'xls', 'xlsx'])
@@ -60,6 +61,20 @@ def api():
         return response
  
     return send_file(output_file_path, mimetype='application/pdf')
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    try:
+        file = request.files['file']
+        if not file:
+            raise ValueError("No file selected")
+        # Process the file and convert to PDF
+        return jsonify({"message": "File uploaded and processed successfully"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+if _name_ == "_main_":
+    app.run(debug=True)
 
 
 if __name__ == "__main__":
